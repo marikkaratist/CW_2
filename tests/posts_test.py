@@ -23,12 +23,14 @@ keys_comments_should_be = {
 @pytest.fixture()
 def posts_dao():
     posts_dao_instance = PostsDAO(directory.POSTS)
+
     return posts_dao_instance
 
 
 @pytest.fixture()
 def comments():
     comments_instance = PostsDAO(directory.COMMENTS)
+
     return comments_instance
 
 
@@ -36,6 +38,7 @@ class TestPostsDAO:
 
     def test_get_all(self, posts_dao):
         posts = posts_dao.get_all()
+
         assert type(posts) == list, "Возвращается не список"
         assert len(posts) > 0, "Возвращается пустой список"
         assert set(posts[0].keys()) == keys_post_should_be, "Ключи не соответствуют требуемым"
@@ -44,6 +47,7 @@ class TestPostsDAO:
         with pytest.raises(ValueError):
             posts_dao.get_by_user("donald")
         posts = posts_dao.get_by_user(user_name="hank")
+
         assert type(posts) == list, "Возвращается не список"
         assert set(posts[0].keys()) == keys_post_should_be, "Ключи не соответствуют требуемым"
 
@@ -51,17 +55,20 @@ class TestPostsDAO:
         with pytest.raises(ValueError):
             comments.get_by_post_id(9)
         comments_list = comments.get_by_post_id(post_id=7)
+
         assert type(comments_list) == list, "Возвращается не список"
         assert set(comments_list[0].keys()) == keys_comments_should_be, "Ключи не соответствуют требуемым"
 
     def test_get_by_text(self, posts_dao):
         posts = posts_dao.get_by_text(query="утро")
+
         assert type(posts) == list, "Возвращается не список"
         assert len(posts) > 0, "Возвращается пустой список"
         assert set(posts[0].keys()) == keys_post_should_be, "Ключи не соответствуют требуемым"
 
     def test_get_by_pk(self, posts_dao):
         posts = posts_dao.get_by_pk(pk=2)
+
         assert type(posts) == dict, "Возвращается не список"
         assert len(posts) > 0, "Возвращается пустой список"
         assert posts["pk"] == 2, "Возвращается неверный идентификатор поста"
